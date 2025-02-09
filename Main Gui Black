@@ -1,0 +1,2009 @@
+game.PlaceId == 5194554335 then
+	getgenv().SecureMode = true
+	local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/nixckk/UI-Library/refs/heads/main/Rayfield'))()
+	local Window = Rayfield:CreateWindow({
+		Name = "The Vampire Legacies 1 | Made by --unigomes",
+		LoadingTitle = "... LOADING ...",
+		LoadingSubtitle = "Made by --Unigomes",
+		DisableRayfieldPrompts = true,
+		KeySystem = true, -- Set this to true to use our key system
+		KeySettings = {
+			Title = "Password",
+			Subtitle = "Made by --unigomes",
+			Note = "Enter the Password to get access.", -- Use this to tell the user how to get a key
+			FileName = "Key", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
+			SaveKey = true, -- The user's key will be saved, but if you change the key, they will be unable to use your script
+			GrabKeyFromSite = true, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
+			Key = {"https://raw.githubusercontent.com/unigomes/roblox-tvl-exploit/refs/heads/main/Password%20Main%20Gui"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
+		}
+	})
+	local Tab = Window:CreateTab("Info")
+	local Section = Tab:CreateSection("")
+	local Paragraph = Tab:CreateParagraph({Title = "NOTE:", Content = "This script is FULLY free and NOT PAID so if it has been sold to you unfortunately you might have gotten scammed."})
+	local Paragraph = Tab:CreateParagraph({Title = "Credits:", Content = "Made by: Uni (Discord: djsaltzman01)"})
+	local Section = Tab:CreateSection("Update Log")
+	local Paragraph = Tab:CreateParagraph({Title = "Update Log: November 15th 2024", Content = "Removed the key system when executing the script."})
+	local Paragraph = Tab:CreateParagraph({Title = "Update Log: November 9th 2024 | Part 2", Content = "Added a coin farm, auto feed for vampires."})
+	local Paragraph = Tab:CreateParagraph({Title = "Update Log: November 9th 2024 | Part 1", Content = "The script has released, more features will come soon."})
+	local Tab = Window:CreateTab("Misc")
+	local Section = Tab:CreateSection("")
+	local Paragraph = Tab:CreateParagraph({Title = "Self Ressurection", Content = "Allows you to ressurect yourself and come back to life. (DOES NOT WORK ON CUSTOMS)"})
+	local Button = Tab:CreateButton({
+		Name = "Self Ressurection",
+		Callback = function()
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			local args = {
+				[1] = {
+					["IsCustom"] = false,
+					["Approved"] = true,
+					["Resurrect"] = true,
+					["Transition"] = false,
+					["Tribrid"] = false,
+					["Option"] = "ressurect"
+				}
+			}
+			ReplicatedStorage:WaitForChild("Events"):WaitForChild("PlayerDeath"):FireServer(unpack(args))
+		end,
+	})
+	local Paragraph = Tab:CreateParagraph({Title = "Transition", Content = "Begins your vampirism transition. (DOES NOT WORK ON CUSTOMS)"})
+	local Button = Tab:CreateButton({
+		Name = "Transition",
+		Callback = function()
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			local args = {
+				[1] = {
+					["IsCustom"] = false,
+					["Approved"] = true,
+					["Resurrect"] = true,
+					["Transition"] = true,
+					["Tribrid"] = false,
+					["Option"] = "ressurect"
+				}
+			}
+			ReplicatedStorage:WaitForChild("Events"):WaitForChild("PlayerDeath"):FireServer(unpack(args))
+		end,
+	})
+	local Paragraph = Tab:CreateParagraph({Title = "Change Outfit", Content = "Opens the outfit changer menu."})
+	local Button = Tab:CreateButton({
+		Name = "Change Outfit",
+		Callback = function()
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			local Players = game:GetService("Players")
+			local Player = Players.LocalPlayer
+			local args = {
+				[1] = {
+					[1] = Player.PlayerGui:WaitForChild("dialogueGui"):WaitForChild("dialogueScript"),
+					[2] = "changeClothes",
+					[3] = Player.PlayerGui:WaitForChild("dialogueGui"),
+					[4] = 1672508614.2517638
+				}
+			}
+			ReplicatedStorage:WaitForChild("Events"):WaitForChild("guiSpecialEvent"):FireServer(unpack(args))
+		end,
+	})
+	local Paragraph = Tab:CreateParagraph({Title = "Ragdoll", Content = "Disables & enables the ragdoll system."})
+	local RagdollToggle = true
+	local Toggle = Tab:CreateToggle({
+		Name = "Ragdoll",
+		CurrentValue = true,
+		Flag = "Toggle1",
+		Callback = function(Value)
+			if Value then
+				RagdollToggle = false
+			else
+				RagdollToggle = true
+			end
+			while RagdollToggle do
+				local Players = game:GetService("Players")
+				local Player = Players.LocalPlayer
+				local Character = Player.Character
+				local Humanoid = Character:WaitForChild("Humanoid")
+				if Character then
+					if Humanoid and Humanoid:GetState() == Enum.HumanoidStateType.Physics then
+						Humanoid:ChangeState(Enum.HumanoidStateType.GettingUp)
+					end
+				end
+				wait(0)
+			end
+		end,
+	})
+	local Paragraph = Tab:CreateParagraph({Title = "Toggle Boundaries / Barriers", Content = "Disables & enables every boundary / barrier from the map."})
+	local Toggle = Tab:CreateToggle({
+		Name = "Toggle Boundaries / Barriers",
+		CurrentValue = true,
+		Flag = "Toggle1",
+		Callback = function(Value)
+			local Players = game:GetService("Players")
+			if Value then
+				local BoundariesFolder = workspace:FindFirstChild("Boundaries")
+				if BoundariesFolder then
+					BoundariesFolder.Parent = Players
+				end
+				local DevBoundary = workspace:WaitForChild("DevBoundary")
+				if DevBoundary then
+					DevBoundary.Parent = Players
+				end
+			else
+				local BoundariesFolder = Players:FindFirstChild("Boundaries")
+				if BoundariesFolder then
+					BoundariesFolder.Parent = workspace
+				end
+				local DevBoundary = Players:WaitForChild("DevBoundary")
+				if DevBoundary then
+					DevBoundary.Parent = workspace
+				end
+			end
+		end,
+	})
+	local CoinAutoFarm = false
+	local Paragraph = Tab:CreateParagraph({Title = "Mystic Coin Auto Farm", Content = "Enables & disables the coin auto farm."})
+	local Toggle = Tab:CreateToggle({
+		Name = "Mystic Coin Auto Farm",
+		CurrentValue = false,
+		Flag = "Toggle1",
+		Callback = function(Value)
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			local Players = game:GetService("Players")
+			local Player = Players.LocalPlayer
+			if Value then
+				CoinAutoFarm = true
+				while CoinAutoFarm do
+					local args = {
+						[1] = {
+							[1] = Player.PlayerGui:WaitForChild("dialogueGui"):WaitForChild("dialogueScript"),
+							[2] = "smallCoinGift",
+							[3] = Player.PlayerGui:WaitForChild("dialogueGui"),
+							[4] = 0
+						}
+					}
+
+					ReplicatedStorage:WaitForChild("Events"):WaitForChild("guiSpecialEvent"):FireServer(unpack(args))
+					local args = {
+						[1] = {
+							[1] = Player.PlayerGui:WaitForChild("dialogueGui"):WaitForChild("dialogueScript"),
+							[2] = "largeCoinGift",
+							[3] = Player.PlayerGui:WaitForChild("dialogueGui"),
+							[4] = 0
+						}
+					}
+
+					ReplicatedStorage:WaitForChild("Events"):WaitForChild("guiSpecialEvent"):FireServer(unpack(args))
+					wait(1)
+					local args = {
+						[1] = {
+							["IsCustom"] = false,
+							["Approved"] = true,
+							["Resurrect"] = true,
+							["Transition"] = false,
+							["Tribrid"] = false,
+							["Option"] = "ressurect"
+						}
+					}
+					ReplicatedStorage:WaitForChild("Events"):WaitForChild("PlayerDeath"):FireServer(unpack(args))
+					wait(2.5)
+				end
+			else
+				CoinAutoFarm = false
+			end
+		end,
+	})
+	local function IsCharTaken(CharName)
+		local CharacterTable = {}
+		local ReplicatedStorage = game:GetService("ReplicatedStorage")
+		for i, v in pairs(ReplicatedStorage:WaitForChild("RemoteEvents"):WaitForChild("GetCharacterList"):InvokeServer()) do
+			if v == "None" then
+				CharacterTable[i] = false
+			else
+				CharacterTable[i] = true
+			end
+		end
+		if CharacterTable[CharName] then
+			return true
+		else
+			return false
+		end
+	end
+
+	local function SelfNotification(NotificationMessage)
+		local ReplicatedStorage = game:GetService("ReplicatedStorage")
+		local Players = game:GetService("Players")
+		local Player = Players.LocalPlayer
+		ReplicatedStorage:WaitForChild("Events"):WaitForChild("CharacterSystems"):WaitForChild("SelfNotification"):FireServer(unpack({
+			[1] = {
+				["Message"] = NotificationMessage,
+				["Player"] = Player,
+			},
+		}))
+	end
+
+	local CurrentOutfit
+	coroutine.wrap(function()
+		while true do
+			local Players = game:GetService("Players")
+			local Player = Players.LocalPlayer
+			if not Player:FindFirstChild("CharacterConfiguration") then
+				repeat task.wait() until Player:FindFirstChild("CharacterConfiguration")
+				CurrentOutfit = Player:FindFirstChild("CharacterConfiguration").OutfitName.Value
+			else
+				if not CurrentOutfit or CurrentOutfit == "" then
+					CurrentOutfit = Player:FindFirstChild("CharacterConfiguration").OutfitName.Value
+				end
+			end
+			task.wait()
+		end
+	end)()
+	local Paragraph = Tab:CreateParagraph({Title = "Become a Heretic (BETA)", Content = "Attempts to turn you into a heretic but sometimes it bugs making you unable to use your keybinds, if that happens just self ressurect and retry until it works. (A FREE SIPHONER WITCH MUST BE OPEN TO DO THIS AND YOU HAVE TO BE THE WITCH SPECIES ALSO WHILE TRANSITIONING YOU MUST FEED ON SOMEONE OR A BLOOD BAG NOT 'Specialty' Drink BECAUSE IT WONT WORK)"})
+	local Button = Tab:CreateButton({
+		Name = "Become a Heretic (BETA)",
+		Callback = function()
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			local Players = game:GetService("Players")
+			local Player = Players.LocalPlayer
+			local Character
+			if not IsCharTaken("Lizzie Saltzman") or not IsCharTaken("Josie Saltzman") or not IsCharTaken("Kai Parker") then
+				Character = Player.Character
+				local OldFrame = Character.PrimaryPart.CFrame
+				local Char1
+				local Char2
+				local Char3
+				local Outfit1
+				local Outfit2
+				local Outfit3
+				local OldChar = Player.CharacterConfiguration.CharacterName.Value
+				local OldOutfit = CurrentOutfit
+				if not IsCharTaken("Josie Saltzman") then Char1 = "Josie Saltzman" else Char1 = false; if not IsCharTaken("Lizzie Saltzman") then Char2 = "Lizzie Saltzman" else Char2 = false; if not IsCharTaken("Kai Parker") then Char3 = "Kai Parker" end end end
+				if not IsCharTaken("Josie Saltzman") then Outfit1 = "Classic Josie" else Outfit1 = false; if not IsCharTaken("Lizzie Saltzman") then Outfit2 = "Classic Lizzie" else Outfit2 = false; if not IsCharTaken("Kai Parker") then Outfit3 = "Classic Kai" end end end
+				ReplicatedStorage:WaitForChild("Events"):WaitForChild("PlayerDeath"):FireServer(unpack({
+					[1] = {
+						["Option"] = "respawn",
+						["Approved"] = true
+					}
+				}))
+				repeat task.wait() until Player.PlayerGui:FindFirstChild("Menu")
+				Player.PlayerGui:FindFirstChild("Menu"):Destroy()
+				ReplicatedStorage:WaitForChild("Events"):WaitForChild("SpawnAsCharacter"):FireServer(unpack({
+					[1] = {
+						["CharName"] = Char1 or Char2 or Char3,
+						["Outfit"] = Outfit1 or Outfit2 or Outfit3
+					}
+				}))
+				workspace.CurrentCamera.CameraType = Enum.CameraType.Custom
+				Character = Player.Character
+				repeat task.wait() until Character:FindFirstChild("HumanoidRootPart")
+				Character.PrimaryPart.CFrame = OldFrame
+				task.wait(1)
+				local Spawn = coroutine.wrap(function()
+					print(OldChar)
+					print(OldOutfit)
+					ReplicatedStorage:WaitForChild("Events"):WaitForChild("SpawnAsCharacter"):FireServer(unpack({
+						[1] = {
+							["CharName"] = OldChar,
+							["Outfit"] = OldOutfit
+						}
+					}))
+				end)
+				ReplicatedStorage:WaitForChild("Events"):WaitForChild("PlayerDeath"):FireServer(unpack({
+					[1] = {
+						["IsCustom"] = false,
+						["Transition"] = true,
+						["Resurrect"] = true,
+						["Approved"] = true,
+						["Option"] = "revive",
+						["Tribrid"] = false
+					}
+				}))
+				local oldtick = tick()
+				repeat task.wait() until Player.PlayerGui:FindFirstChild("Menu") or tick() >= oldtick+10
+				Spawn()
+				task.wait(2)
+				game:GetService("UserInputService").MouseIconEnabled = true
+			else
+				Rayfield:Notify({
+					Title = "Notification",
+					Content = "No siphoners are open, please try again later!",
+					Duration = 5,
+					Image = 11401835376,
+					Actions = { -- Notification Buttons
+
+						Ignore = { -- Duplicate this table (or remove it) to add and remove buttons to the notification.
+							Name = "Close",
+							Callback = function()
+							end
+						},
+
+					},
+				})
+				SelfNotification("")
+			end
+		end,
+	})
+	local Paragraph = Tab:CreateParagraph({Title = "Become a Tribrid (BETA)", Content = "Attempts to turn you into a tribrid but sometimes it bugs making you unable to use your keybinds, if that happens just self ressurect and retry until it works. (YOU MUST OWN HOPE AND SHE MUST BE OPEN TO DO THIS ALSO WHILE TRANSITIONING YOU MUST FEED ON SOMEONE OR A BLOOD BAG NOT 'Specialty' Drink BECAUSE IT WONT WORK)"})
+	local Button = Tab:CreateButton({
+		Name = "Become a Tribrid (BETA)",
+		Callback = function()
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			local Players = game:GetService("Players")
+			local Player = Players.LocalPlayer
+			local Character
+			if not IsCharTaken("Hope Mikaelson") then
+				Character = Player.Character
+				local OldFrame = Character.PrimaryPart.CFrame
+				local Char1
+				local Char2
+				local Char3
+				local Outfit1
+				local Outfit2
+				local Outfit3
+				local OldChar = Player.CharacterConfiguration.CharacterName.Value
+				local OldOutfit = CurrentOutfit
+				if not IsCharTaken("Hope Mikaelson") then Char1 = "Hope Mikaelson" else Char1 = false end
+				if not IsCharTaken("Hope Mikaelson") then Outfit1 = "Casual Hope" else Outfit1 = false end
+				ReplicatedStorage:WaitForChild("Events"):WaitForChild("PlayerDeath"):FireServer(unpack({
+					[1] = {
+						["Option"] = "respawn",
+						["Approved"] = true
+					}
+				}))
+				repeat task.wait() until Player.PlayerGui:FindFirstChild("Menu")
+				Player.PlayerGui:FindFirstChild("Menu"):Destroy()
+				ReplicatedStorage:WaitForChild("Events"):WaitForChild("SpawnAsCharacter"):FireServer(unpack({
+					[1] = {
+						["CharName"] = Char1,
+						["Outfit"] = Outfit1
+					}
+				}))
+				workspace.CurrentCamera.CameraType = Enum.CameraType.Custom
+				Character = Player.Character
+				repeat task.wait() until Character:FindFirstChild("HumanoidRootPart")
+				Character.PrimaryPart.CFrame = OldFrame
+				task.wait(1)
+				local Spawn = coroutine.wrap(function()
+					print(OldChar)
+					print(OldOutfit)
+					ReplicatedStorage:WaitForChild("Events"):WaitForChild("SpawnAsCharacter"):FireServer(unpack({
+						[1] = {
+							["CharName"] = OldChar,
+							["Outfit"] = OldOutfit
+						}
+					}))
+				end)
+				ReplicatedStorage:WaitForChild("Events"):WaitForChild("PlayerDeath"):FireServer(unpack({
+					[1] = {
+						["IsCustom"] = false,
+						["Transition"] = true,
+						["Resurrect"] = true,
+						["Approved"] = true,
+						["Option"] = "revive",
+						["Tribrid"] = true
+					}
+				}))
+				local oldtick = tick()
+				repeat task.wait() until Player.PlayerGui:FindFirstChild("Menu") or tick() >= oldtick+10
+				Spawn()
+				task.wait(2)
+				game:GetService("UserInputService").MouseIconEnabled = true
+			else
+				Rayfield:Notify({
+					Title = "Notification",
+					Content = "Hope isn't currently open, please try again later!",
+					Duration = 5,
+					Image = 11401835376,
+					Actions = { -- Notification Buttons
+
+						Ignore = { -- Duplicate this table (or remove it) to add and remove buttons to the notification.
+							Name = "Close",
+							Callback = function()
+							end
+						},
+
+					},
+				})
+				SelfNotification("")
+			end
+		end,
+	})
+	local Tab = Window:CreateTab("Stats")
+	local Section = Tab:CreateSection("Health")
+	local Paragraph = Tab:CreateParagraph({Title = "Increase Health", Content = "Grants you 200 more health."})
+	local Button = Tab:CreateButton({
+		Name = "Increase Health",
+		Callback = function()
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			local Players = game:GetService("Players")
+			local Player = Players.LocalPlayer
+			local args = {
+				[1] = {
+					[1] = Player.PlayerGui:WaitForChild("dialogueGui"):WaitForChild("dialogueScript"),
+					[2] = "increaseMaxHealth",
+					[3] = Player.PlayerGui:WaitForChild("dialogueGui"),
+					[4] = 0
+				}
+			}
+			ReplicatedStorage:WaitForChild("Events"):WaitForChild("guiSpecialEvent"):FireServer(unpack(args))
+		end,
+	})
+	local IncreaseHealthSpamToggle = false
+	local Paragraph = Tab:CreateParagraph({Title = "Increase Health Spam", Content = "Grants you immortality but not fully. You can still be killed by some stuff with this toggle."})
+	local Toggle = Tab:CreateToggle({
+		Name = "Increase Health Spam",
+		CurrentValue = false,
+		Flag = "Toggle1",
+		Callback = function(Value)
+			if Value then
+				IncreaseHealthSpamToggle = true
+				while IncreaseHealthSpamToggle do
+					local ReplicatedStorage = game:GetService("ReplicatedStorage")
+					local Players = game:GetService("Players")
+					local Player = Players.LocalPlayer
+					local args = {
+						[1] = {
+							[1] = Player.PlayerGui:WaitForChild("dialogueGui"):WaitForChild("dialogueScript"),
+							[2] = "increaseMaxHealth",
+							[3] = Player.PlayerGui:WaitForChild("dialogueGui"),
+							[4] = 0
+						}
+					}
+					ReplicatedStorage:WaitForChild("Events"):WaitForChild("guiSpecialEvent"):FireServer(unpack(args))
+					ReplicatedStorage:WaitForChild("Events"):WaitForChild("guiSpecialEvent"):FireServer(unpack(args))
+					ReplicatedStorage:WaitForChild("Events"):WaitForChild("guiSpecialEvent"):FireServer(unpack(args))
+					ReplicatedStorage:WaitForChild("Events"):WaitForChild("guiSpecialEvent"):FireServer(unpack(args))
+					ReplicatedStorage:WaitForChild("Events"):WaitForChild("guiSpecialEvent"):FireServer(unpack(args))
+					wait(0)
+				end
+			else
+				IncreaseHealthSpamToggle = false
+			end
+		end,
+	})
+	local Section = Tab:CreateSection("Magic")
+	local Paragraph = Tab:CreateParagraph({Title = "Increase Magic", Content = "Grants you 200 more magic if you have a witch side. This can only be used once per life!"})
+	local Button = Tab:CreateButton({
+		Name = "Increase Magic",
+		Callback = function()
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			local Players = game:GetService("Players")
+			local Player = Players.LocalPlayer
+			local Character = Player.Character
+			if Character:FindFirstChild("WitchStats") then
+				local args = {
+					[1] = {
+						[1] = Player.PlayerGui:WaitForChild("dialogueGui"):WaitForChild("dialogueScript"),
+						[2] = "increaseMaxMagic",
+						[3] = Player.PlayerGui:WaitForChild("dialogueGui"),
+						[4] = 0
+					}
+				}
+				ReplicatedStorage:WaitForChild("Events"):WaitForChild("guiSpecialEvent"):FireServer(unpack(args))
+				wait(0.1)
+				if Character:FindFirstChild("increasedMaxMagic") then
+					Character:WaitForChild("increasedMaxMagic"):Destroy()
+				end
+			end
+		end,
+	})
+	local CandleChannelingSpamToggle = false
+	local Paragraph = Tab:CreateParagraph({Title = "Candle Channeling Spam", Content = "You must have the candle item so use this, it will regenerate your magic slowly no matter if you have the candle equipped or in your inventory."})
+	local Toggle = Tab:CreateToggle({
+		Name = "Candle Channeling Spam",
+		CurrentValue = false,
+		Flag = "Toggle1",
+		Callback = function(Value)
+			if Value then
+				CandleChannelingSpamToggle = true
+				while CandleChannelingSpamToggle do
+					local Players = game:GetService("Players")
+					local Player = Players.LocalPlayer
+					local Character = Player.Character
+					if Player.Backpack:FindFirstChild("Candle") then
+						Player.Backpack:WaitForChild("Candle"):WaitForChild("Handle"):WaitForChild("signal"):FireServer()
+					elseif Character:FindFirstChild("Candle") then
+						Character:WaitForChild("Candle"):WaitForChild("Handle"):WaitForChild("signal"):FireServer()
+					end
+					wait(0)
+				end
+			else
+				CandleChannelingSpamToggle = false
+			end
+		end,
+	})
+	local InfiniteMagicToggle = false
+	local Paragraph = Tab:CreateParagraph({Title = "Infinite Magic", Content = "Keeps your magic filled up at all times, it does not work for the siphoner species."})
+	local Toggle = Tab:CreateToggle({
+		Name = "Infinite Magic",
+		CurrentValue = false,
+		Flag = "Toggle1", 
+		Callback = function(Value)
+			if Value then
+				InfiniteMagicToggle = true
+				while InfiniteMagicToggle do
+					local ReplicatedStorage = game:GetService("ReplicatedStorage")
+					ReplicatedStorage:WaitForChild("Events"):WaitForChild("CharacterSystems"):WaitForChild("CharacterStats"):FireServer()
+					wait(0)
+				end
+			else
+				InfiniteMagicToggle = false
+			end
+		end,
+	})
+	local Section = Tab:CreateSection("Thirst")
+	local Paragraph = Tab:CreateParagraph({Title = "Auto Feed", Content = "Proceeds to get a blood drink and drink it if your thirst is at 100 or below."})
+	local AutoFeedToggle = false
+	local Toggle = Tab:CreateToggle({
+		Name = "Auto Feed",
+		CurrentValue = false,
+		Flag = "Toggle1", 
+		Callback = function(Value)
+			if Value then
+				AutoFeedToggle = true
+				local ReplicatedStorage = game:GetService("ReplicatedStorage")
+				local Players = game:GetService("Players")
+				local Player = Players.LocalPlayer
+				local Character = Player.Character
+				if Character:FindFirstChild("VampireStats") then
+					Character:WaitForChild("VampireStats"):WaitForChild("Thirst"):GetPropertyChangedSignal("Value"):Connect(function()
+						if AutoFeedToggle == true then
+							if Character:WaitForChild("VampireStats"):WaitForChild("Thirst").Value <= 100 then
+								local args = {
+									[1] = {
+										[1] = Player.PlayerGui:WaitForChild("dialogueGui"):WaitForChild("dialogueScript"),
+										[2] = "receiveBloodDrink",
+										[3] = Player.PlayerGui:WaitForChild("dialogueGui"),
+										[4] = 0
+									}
+								}
+								ReplicatedStorage:WaitForChild("Events"):WaitForChild("guiSpecialEvent"):FireServer(unpack(args))
+								local SpecialtyDrink = Player.Backpack:WaitForChild("'Specialty' Drink")
+								SpecialtyDrink.Parent = Character
+								SpecialtyDrink:Activate()
+								wait(0.1)
+								SpecialtyDrink.Parent = Player.Backpack
+							end
+						end
+					end)
+				end
+			else
+				AutoFeedToggle = false
+			end
+		end,
+	})
+    local Paragraph = Tab:CreateParagraph({Title = "Auto Moon Vial", Content = "Continuously drinks Moon Vial when the toggle is on."})
+    local AutoMoonVialToggle = false
+    
+    local Toggle = Tab:CreateToggle({
+        Name = "Auto Moon Vial",
+        CurrentValue = false,
+        Flag = "Toggle2", 
+        Callback = function(Value)
+            AutoMoonVialToggle = Value
+            
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local Players = game:GetService("Players")
+            local Player = Players.LocalPlayer
+            
+            spawn(function()
+                while AutoMoonVialToggle do
+                    -- Request and drink Moon Vial instantly
+                    local args = {
+                        [1] = {
+                            [1] = Player.PlayerGui:WaitForChild("dialogueGui"):WaitForChild("dialogueScript"),
+                            [2] = "buyPotion",
+                            [3] = Player.PlayerGui:WaitForChild("dialogueGui"),
+                            [4] = 0
+                        }
+                    }
+                    ReplicatedStorage:WaitForChild("Events"):WaitForChild("guiSpecialEvent"):FireServer(unpack(args))
+                    
+                    local MoonVial
+                    repeat
+                        MoonVial = Player.Backpack:FindFirstChild("Moon Vial")
+                        wait(0.0)
+                    until MoonVial or not AutoMoonVialToggle
+                    
+                    if not AutoMoonVialToggle then break end
+                    
+                    if MoonVial then
+                        MoonVial.Parent = Player.Character
+                        MoonVial:Activate()
+                        wait(0.0)
+                    end
+                end
+            end)
+        end,
+    })
+    local Section = Tab:CreateSection("Energy")
+	local Paragraph = Tab:CreateParagraph({Title = "Increase Energy", Content = "Grants you 80 more energy if you have a vampire or werewolf side. This can only be used once per life!"})
+	local Button = Tab:CreateButton({
+		Name = "Increase Energy",
+		Callback = function()
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			local Players = game:GetService("Players")
+			local Player = Players.LocalPlayer
+			local Character = Player.Character
+			if Character:FindFirstChild("VampireStats") or Character:FindFirstChild("WolfStats") then
+				local args = {
+					[1] = {
+						[1] = Player.PlayerGui:WaitForChild("dialogueGui"):WaitForChild("dialogueScript"),
+						[2] = "increaseMaxEnergy",
+						[3] = Player.PlayerGui:WaitForChild("dialogueGui"),
+						[4] = 0
+					}
+				}
+				ReplicatedStorage:WaitForChild("Events"):WaitForChild("guiSpecialEvent"):FireServer(unpack(args))
+				wait(0.1)
+				if Character:FindFirstChild("increasedMaxEnergy") then
+					Character:WaitForChild("increasedMaxEnergy"):Destroy()
+				end
+			end
+		end,
+	})
+	local Tab = Window:CreateTab("Tools")
+	local Section = Tab:CreateSection("Free Tools")
+	local Paragraph = Tab:CreateParagraph({Title = "Wooden Stake", Content = "Gives you a wooden stake."})
+	local Button = Tab:CreateButton({
+		Name = "Wooden Stake",
+		Callback = function()
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			local Players = game:GetService("Players")
+			local Player = Players.LocalPlayer
+			local args = {
+				[1] = {
+					[1] = Player.PlayerGui:WaitForChild("dialogueGui"):WaitForChild("dialogueScript"),
+					[2] = "freeStake",
+					[3] = Player.PlayerGui:WaitForChild("dialogueGui"),
+					[4] = 0
+				}
+			}
+			ReplicatedStorage:WaitForChild("Events"):WaitForChild("guiSpecialEvent"):FireServer(unpack(args))
+		end,
+	})
+	local Paragraph = Tab:CreateParagraph({Title = "Coffee", Content = "Gives you a coffee."})
+	local Button = Tab:CreateButton({
+		Name = "Coffee",
+		Callback = function()
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			local Players = game:GetService("Players")
+			local Player = Players.LocalPlayer
+			local args = {
+				[1] = {
+					[1] = Player.PlayerGui:WaitForChild("dialogueGui"):WaitForChild("dialogueScript"),
+					[2] = "receiveCoffee",
+					[3] = Player.PlayerGui:WaitForChild("dialogueGui"),
+					[4] = 0
+				}
+			}
+			ReplicatedStorage:WaitForChild("Events"):WaitForChild("guiSpecialEvent"):FireServer(unpack(args))
+		end,
+	})
+	local Paragraph = Tab:CreateParagraph({Title = "'Specialty' Drink", Content = "Gives you a 'specialty' drink."})
+	local Button = Tab:CreateButton({
+		Name = "'Specialty' Drink",
+		Callback = function()
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			local Players = game:GetService("Players")
+			local Player = Players.LocalPlayer
+			local args = {
+				[1] = {
+					[1] = Player.PlayerGui:WaitForChild("dialogueGui"):WaitForChild("dialogueScript"),
+					[2] = "receiveBloodDrink",
+					[3] = Player.PlayerGui:WaitForChild("dialogueGui"),
+					[4] = 0
+				}
+			}
+			ReplicatedStorage:WaitForChild("Events"):WaitForChild("guiSpecialEvent"):FireServer(unpack(args))
+		end,
+	})
+	local Paragraph = Tab:CreateParagraph({Title = "Beverage", Content = "Gives you a beverage."})
+	local Button = Tab:CreateButton({
+		Name = "Beverage",
+		Callback = function()
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			local Players = game:GetService("Players")
+			local Player = Players.LocalPlayer
+			local args = {
+				[1] = {
+					[1] = Player.PlayerGui:WaitForChild("dialogueGui"):WaitForChild("dialogueScript"),
+					[2] = "receiveBeverage",
+					[3] = Player.PlayerGui:WaitForChild("dialogueGui"),
+					[4] = 0
+				}
+			}
+			ReplicatedStorage:WaitForChild("Events"):WaitForChild("guiSpecialEvent"):FireServer(unpack(args))
+		end,
+	})
+	local Paragraph = Tab:CreateParagraph({Title = "Homework", Content = "Gives you homework."})
+	local Button = Tab:CreateButton({
+		Name = "Homework",
+		Callback = function()
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			local Players = game:GetService("Players")
+			local Player = Players.LocalPlayer
+			local args = {
+				[1] = {
+					[1] = Player.PlayerGui:WaitForChild("dialogueGui"):WaitForChild("dialogueScript"),
+					[2] = "getHomework",
+					[3] = Player.PlayerGui:WaitForChild("dialogueGui"),
+					[4] = 0
+				}
+			}
+			ReplicatedStorage:WaitForChild("Events"):WaitForChild("guiSpecialEvent"):FireServer(unpack(args))
+		end,
+	})
+	local Paragraph = Tab:CreateParagraph({Title = "White Oak Ash", Content = "Gives you white oak ash."})
+	local Button = Tab:CreateButton({
+		Name = "White Oak Ash",
+		Callback = function()
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			local Players = game:GetService("Players")
+			local Player = Players.LocalPlayer
+			local args = {
+				[1] = {
+					[1] = Player.PlayerGui:WaitForChild("dialogueGui"):WaitForChild("dialogueScript"),
+					[2] = "freeStake",
+					[3] = Player.PlayerGui:WaitForChild("dialogueGui"),
+					[4] = 0
+				}
+			}
+			ReplicatedStorage:WaitForChild("Events"):WaitForChild("guiSpecialEvent"):FireServer(unpack(args))
+			ReplicatedStorage:WaitForChild("Events"):WaitForChild("guiSpecialEvent"):FireServer(unpack(args))
+			ReplicatedStorage:WaitForChild("Events"):WaitForChild("guiSpecialEvent"):FireServer(unpack(args))
+			wait(0.1)
+			local args = {
+				[1] = {
+					[1] = Player.PlayerGui:WaitForChild("dialogueGui"):WaitForChild("dialogueScript"),
+					[2] = "receiveWhiteOakAsh",
+					[3] = Player.PlayerGui:WaitForChild("dialogueGui"),
+					[4] = 0
+				}
+			}
+			ReplicatedStorage:WaitForChild("Events"):WaitForChild("guiSpecialEvent"):FireServer(unpack(args))
+		end,
+	})
+	local Paragraph = Tab:CreateParagraph({Title = "Bouquet", Content = "Gives you a bouquet."})
+	local Button = Tab:CreateButton({
+		Name = "Bouquet",
+		Callback = function()
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			local Players = game:GetService("Players")
+			local Player = Players.LocalPlayer
+			local args = {
+				[1] = {
+					[1] = Player.PlayerGui:WaitForChild("dialogueGui"):WaitForChild("dialogueScript"),
+					[2] = "flowers",
+					[3] = Player.PlayerGui:WaitForChild("dialogueGui"),
+					[4] = 0
+				}
+			}
+			ReplicatedStorage:WaitForChild("Events"):WaitForChild("guiSpecialEvent"):FireServer(unpack(args))
+		end,
+	})
+	local Section = Tab:CreateSection("Mystic Coin Tools")
+	local Paragraph = Tab:CreateParagraph({Title = "Enchanted Dagger", Content = "Purchases an enchanted dagger."})
+	local Button = Tab:CreateButton({
+		Name = "Enchanted Dagger (20$)",
+		Callback = function()
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			local Players = game:GetService("Players")
+			local Player = Players.LocalPlayer
+			local args = {
+				[1] = {
+					[1] = Player.PlayerGui:WaitForChild("dialogueGui"):WaitForChild("dialogueScript"),
+					[2] = "buyDagger",
+					[3] = Player.PlayerGui:WaitForChild("dialogueGui"),
+					[4] = 0
+				}
+			}
+			ReplicatedStorage:WaitForChild("Events"):WaitForChild("guiSpecialEvent"):FireServer(unpack(args))
+		end,
+	})
+	local Paragraph = Tab:CreateParagraph({Title = "Candle", Content = "Purchases a candle."})
+	local Button = Tab:CreateButton({
+		Name = "Candle (20$)",
+		Callback = function()
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			local Players = game:GetService("Players")
+			local Player = Players.LocalPlayer
+			local args = {
+				[1] = {
+					[1] = Player.PlayerGui:WaitForChild("dialogueGui"):WaitForChild("dialogueScript"),
+					[2] = "buyCandle",
+					[3] = Player.PlayerGui:WaitForChild("dialogueGui"),
+					[4] = 0
+				}
+			}
+			ReplicatedStorage:WaitForChild("Events"):WaitForChild("guiSpecialEvent"):FireServer(unpack(args))
+		end,
+	})
+	local Paragraph = Tab:CreateParagraph({Title = "Moon Vial", Content = "Purchases a moon vial."})
+	local Button = Tab:CreateButton({
+		Name = "Moon Vial (20$)",
+		Callback = function()
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			local Players = game:GetService("Players")
+			local Player = Players.LocalPlayer
+			local args = {
+				[1] = {
+					[1] = Player.PlayerGui:WaitForChild("dialogueGui"):WaitForChild("dialogueScript"),
+					[2] = "buyPotion",
+					[3] = Player.PlayerGui:WaitForChild("dialogueGui"),
+					[4] = 0
+				}
+			}
+			ReplicatedStorage:WaitForChild("Events"):WaitForChild("guiSpecialEvent"):FireServer(unpack(args))
+		end,
+	})
+	local Paragraph = Tab:CreateParagraph({Title = "Wooden Stake", Content = "Purchases a wooden stake."})
+	local Button = Tab:CreateButton({
+		Name = "Wooden Stake (130$)",
+		Callback = function()
+			fireclickdetector(workspace:WaitForChild("StakesRegisters"):WaitForChild("WoodenStake"):WaitForChild("ClickDetector"))
+		end,
+	})
+	local Paragraph = Tab:CreateParagraph({Title = "Vervain Syringe", Content = "Purchases a vervain syringe."})
+	local Button = Tab:CreateButton({
+		Name = "Vervain Syringe (80$)",
+		Callback = function()
+			fireclickdetector(workspace:WaitForChild("StakesRegisters"):WaitForChild("VervainSyringe"):WaitForChild("ClickDetector"))
+		end,
+	})
+	local Paragraph = Tab:CreateParagraph({Title = "Vervain Grenade", Content = "Purchases a vervain grenade."})
+	local Button = Tab:CreateButton({
+		Name = "Vervain Grenade (120$)",
+		Callback = function()
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			local Players = game:GetService("Players")
+			local Player = Players.LocalPlayer
+			fireclickdetector(workspace:WaitForChild("StakesRegisters"):WaitForChild("Vervain"):WaitForChild("ClickDetector"))
+			fireclickdetector(workspace:WaitForChild("StakesRegisters"):WaitForChild("Vervain"):WaitForChild("ClickDetector"))
+			fireclickdetector(workspace:WaitForChild("StakesRegisters"):WaitForChild("Vervain"):WaitForChild("ClickDetector"))
+			wait(0.1)
+			local args = {
+				[1] = {
+					[1] = Player.PlayerGui:WaitForChild("dialogueGui"):WaitForChild("dialogueScript"),
+					[2] = "vervNade",
+					[3] = Player.PlayerGui:WaitForChild("dialogueGui"),
+					[4] = 0
+				}
+			}
+			ReplicatedStorage:WaitForChild("Events"):WaitForChild("guiSpecialEvent"):FireServer(unpack(args))
+		end,
+	})
+	local Paragraph = Tab:CreateParagraph({Title = "Wolfsbane Grenade", Content = "Purchases a wolfsbane grenade."})
+	local Button = Tab:CreateButton({
+		Name = "Wolfsbane Grenade (120$)",
+		Callback = function()
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			local Players = game:GetService("Players")
+			local Player = Players.LocalPlayer
+			fireclickdetector(workspace:WaitForChild("StakesRegisters"):WaitForChild("Wolfsbane"):WaitForChild("ClickDetector"))
+			fireclickdetector(workspace:WaitForChild("StakesRegisters"):WaitForChild("Wolfsbane"):WaitForChild("ClickDetector"))
+			fireclickdetector(workspace:WaitForChild("StakesRegisters"):WaitForChild("Wolfsbane"):WaitForChild("ClickDetector"))
+			wait(0.1)
+			local args = {
+				[1] = {
+					[1] = Player.PlayerGui:WaitForChild("dialogueGui"):WaitForChild("dialogueScript"),
+					[2] = "wolfNade",
+					[3] = Player.PlayerGui:WaitForChild("dialogueGui"),
+					[4] = 0
+				}
+			}
+			ReplicatedStorage:WaitForChild("Events"):WaitForChild("guiSpecialEvent"):FireServer(unpack(args))
+		end,
+	})
+	local Paragraph = Tab:CreateParagraph({Title = "Vervain", Content = "Purchases vervain."})
+	local Button = Tab:CreateButton({
+		Name = "Vervain (40$)",
+		Callback = function()
+			fireclickdetector(workspace:WaitForChild("StakesRegisters"):WaitForChild("Vervain"):WaitForChild("ClickDetector"))
+		end,
+	})
+	local Paragraph = Tab:CreateParagraph({Title = "Wolfsbane", Content = "Purchases wolfsbane."})
+	local Button = Tab:CreateButton({
+		Name = "Wolfsbane (40$)",
+		Callback = function()
+			fireclickdetector(workspace:WaitForChild("StakesRegisters"):WaitForChild("Wolfsbane"):WaitForChild("ClickDetector"))
+		end,
+	})
+	local Paragraph = Tab:CreateParagraph({Title = "Golden Arrow", Content = "Purchases a golden arrow."})
+	local Button = Tab:CreateButton({
+		Name = "Golden Arrow (600$)",
+		Callback = function()
+			fireclickdetector(workspace:WaitForChild("StakesRegisters"):WaitForChild("GoldenArrow"):WaitForChild("ClickDetector"))
+		end,
+	})
+	local Section = Tab:CreateSection("Robux Tools")
+	local Paragraph = Tab:CreateParagraph({Title = "White Oak Stake", Content = "Purchases a white oak stake."})
+	local Button = Tab:CreateButton({
+		Name = "White Oak Stake (25R$)",
+		Callback = function()
+			fireclickdetector(workspace:WaitForChild("StakesRegisters"):WaitForChild("WhiteOakStake"):WaitForChild("ClickDetector"))
+		end,
+	})
+	local Paragraph = Tab:CreateParagraph({Title = "3 Use White Oak Stake", Content = "Purchases a 3 use white oak stake."})
+	local Button = Tab:CreateButton({
+		Name = "3 Use White Oak Stake (60R$)",
+		Callback = function()
+			fireclickdetector(workspace:WaitForChild("StakesRegisters"):WaitForChild("3UseWhiteOakStake"):WaitForChild("ClickDetector"))
+		end,
+	})
+	local Tab = Window:CreateTab("Target")
+	local Section = Tab:CreateSection("Player")
+	local CurrentTargetPlayer
+	local Paragraph = Tab:CreateParagraph({Title = "Target Player", Content = "Enter your target's full username into the textbox to begin."})
+	local PlayerLabel = Tab:CreateLabel("Target: Undecided")
+	local Players = game:GetService("Players")
+	local Input = Tab:CreateInput({
+		Name = "Enter Username",
+		PlaceholderText = "Username Here",
+		RemoveTextAfterFocusLost = false,
+		Callback = function(Text)
+			CurrentTargetPlayer = Text:lower()
+			local PlayerFound = false
+			for _, TargetPlayer in ipairs(Players:GetPlayers()) do
+				if TargetPlayer.Name:lower() == CurrentTargetPlayer then
+					PlayerFound = true
+					if TargetPlayer.DisplayName == TargetPlayer.Name then
+						PlayerLabel:Set("Target: @"..TargetPlayer.Name)
+					else
+						PlayerLabel:Set("Target: "..TargetPlayer.DisplayName.." (@"..TargetPlayer.Name..")")
+					end
+					break
+				end
+			end
+			if not PlayerFound then
+				PlayerLabel:Set("Target: Undecided")
+			end
+		end,
+	})
+	local Paragraph = Tab:CreateParagraph({Title = "Teleport", Content = "Teleports you to the target."})
+	local Button = Tab:CreateButton({
+		Name = "Teleport",
+		Callback = function()
+			local Players = game:GetService("Players")
+			local Player = Players.LocalPlayer
+			local Character = Player.Character
+			for _, TargetPlayer in ipairs(Players:GetPlayers()) do
+				if TargetPlayer.Name:lower() == CurrentTargetPlayer then
+					Character.PrimaryPart.CFrame = TargetPlayer.Character.PrimaryPart.CFrame
+					break
+				end
+			end
+		end,
+	})
+	local Paragraph = Tab:CreateParagraph({Title = "Spectate", Content = "Views your target, click to toggle spectation."})
+	local Toggle = Tab:CreateToggle({
+		Name = "Spectate",
+		CurrentValue = false,
+		Flag = "Toggle1",
+		Callback = function(Value)
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			local Players = game:GetService("Players")
+			local Player = Players.LocalPlayer
+			local Character = Player.Character
+			local Humanoid = Character:WaitForChild("Humanoid")
+			if Value then
+				for _, TargetPlayer in ipairs(Players:GetPlayers()) do
+					if TargetPlayer.Name:lower() == CurrentTargetPlayer then
+						workspace.CurrentCamera.CameraSubject = TargetPlayer.Character:WaitForChild("Humanoid")
+						break
+					end
+				end
+			else
+				workspace.CurrentCamera.CameraSubject = Humanoid
+			end
+		end,
+	})
+	local SpamIncednPlr = false
+	local SpamIctusPlr = false
+	local Paragraph = Tab:CreateParagraph({Title = "Spell Spamming", Content = "Attemps to spam your target with spells you toggled to spam them, while spamming it goes to the point to where your cooldown is gone fully. (YOU MUST HAVE A WITCH SIDE TO DO THIS)"})
+
+	local Toggle = Tab:CreateToggle({
+		Name = "Ferveret Sanguis",
+		CurrentValue = false,
+		Flag = "Toggle1",
+		Callback = function(Value)
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			if Value then
+				SpamIctusPlr = true
+				while SpamIctusPlr do
+					local Players = game:GetService("Players")
+					for _, TargetPlayer in ipairs(Players:GetPlayers()) do
+						if TargetPlayer.Name:lower() == CurrentTargetPlayer then
+							local args = {
+								[1] = {
+									["Incant"] = "Ferveret sanguis",
+									["Target"] = TargetPlayer.Character
+								}
+							}
+							ReplicatedStorage:WaitForChild("RemoteEvents"):WaitForChild("WitchSpell"):FireServer(unpack(args))
+							break
+						end
+					end
+					wait(0)
+				end
+			else
+				SpamIctusPlr = false
+			end
+		end,
+	})
+	local SpamOssoxPlr = false
+	local Toggle = Tab:CreateToggle({
+		Name = "Lecutio Maxima",
+		CurrentValue = false,
+		Flag = "Toggle1",
+		Callback = function(Value)
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			if Value then
+				SpamOssoxPlr = true
+				while SpamOssoxPlr do
+					local Players = game:GetService("Players")
+					for _, TargetPlayer in ipairs(Players:GetPlayers()) do
+						if TargetPlayer.Name:lower() == CurrentTargetPlayer then
+							local args = {
+								[1] = {
+									["Incant"] = "Lecutio Maxima",
+									["Target"] = TargetPlayer.Character
+								}
+							}
+							ReplicatedStorage:WaitForChild("RemoteEvents"):WaitForChild("WitchSpell"):FireServer(unpack(args))
+							break
+						end
+					end
+					wait(0)
+				end
+			else
+				SpamOssoxPlr = false
+			end
+		end,
+	})
+	local Toggle = Tab:CreateToggle({
+		Name = "Incendia",
+		CurrentValue = false,
+		Flag = "Toggle1",
+		Callback = function(Value)
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			if Value then
+				SpamIncednPlr = true
+				while SpamIncednPlr do
+					local Players = game:GetService("Players")
+					for _, TargetPlayer in ipairs(Players:GetPlayers()) do
+						if TargetPlayer.Name:lower() == CurrentTargetPlayer then
+							local args = {
+								[1] = {
+									["Incant"] = "Incendia",
+									["Target"] = TargetPlayer.Character
+								}
+							}
+							ReplicatedStorage:WaitForChild("RemoteEvents"):WaitForChild("WitchSpell"):FireServer(unpack(args))
+							break
+						end
+					end
+					wait(0)
+				end
+			else
+				SpamIncednPlr = false
+			end
+		end,
+	})
+	local SpamErroxPlr = false
+
+	local Toggle = Tab:CreateToggle({
+		Name = "Errox Femus",
+		CurrentValue = false,
+		Flag = "Toggle1",
+		Callback = function(Value)
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			if Value then
+				SpamErroxPlr = true
+				while SpamErroxPlr do
+					local Players = game:GetService("Players")
+					for _, TargetPlayer in ipairs(Players:GetPlayers()) do
+						if TargetPlayer.Name:lower() == CurrentTargetPlayer then
+							local args = {
+								[1] = {
+									["Incant"] = "Errox Femus",
+									["Target"] = TargetPlayer.Character
+								}
+							}
+							ReplicatedStorage:WaitForChild("RemoteEvents"):WaitForChild("WitchSpell"):FireServer(unpack(args))
+							break
+						end
+					end
+					wait(0)
+				end
+			else
+				SpamErroxPlr = false
+			end
+		end,
+	})
+	local SpamPoenaPlr = false
+
+	local Toggle = Tab:CreateToggle({
+		Name = "Poena Doloris",
+		CurrentValue = false,
+		Flag = "Toggle1",
+		Callback = function(Value)
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			if Value then
+				SpamPoenaPlr = true
+				while SpamPoenaPlr do
+					local Players = game:GetService("Players")
+					for _, TargetPlayer in ipairs(Players:GetPlayers()) do
+						if TargetPlayer.Name:lower() == CurrentTargetPlayer then
+							local args = {
+								[1] = {
+									["Incant"] = "Poena Doloris",
+									["Target"] = TargetPlayer.Character
+								}
+							}
+							ReplicatedStorage:WaitForChild("RemoteEvents"):WaitForChild("WitchSpell"):FireServer(unpack(args))
+							break
+						end
+					end
+					wait(0)
+				end
+			else
+				SpamPoenaPlr = false
+			end
+		end,
+	})
+	local SpamImmobilusPlr = false
+
+	local Toggle = Tab:CreateToggle({
+		Name = "Immobilus",
+		CurrentValue = false,
+		Flag = "Toggle1",
+		Callback = function(Value)
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			if Value then
+				SpamImmobilusPlr = true
+				while SpamImmobilusPlr do
+					local Players = game:GetService("Players")
+					for _, TargetPlayer in ipairs(Players:GetPlayers()) do
+						if TargetPlayer.Name:lower() == CurrentTargetPlayer then
+							local args = {
+								[1] = {
+									["Incant"] = "Immobilus",
+									["Target"] = TargetPlayer.Character
+								}
+							}
+							ReplicatedStorage:WaitForChild("RemoteEvents"):WaitForChild("WitchSpell"):FireServer(unpack(args))
+							break
+						end
+					end
+					wait(0)
+				end
+			else
+				SpamImmobilusPlr = false
+			end
+		end,
+	})
+	local SpamPMIPlr = false
+
+	local Toggle = Tab:CreateToggle({
+		Name = "Phasmatos Motus Incendiamos",
+		CurrentValue = false,
+		Flag = "Toggle1",
+		Callback = function(Value)
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			if Value then
+				SpamPMIPlr = true
+				while SpamPMIPlr do
+					local Players = game:GetService("Players")
+					for _, TargetPlayer in ipairs(Players:GetPlayers()) do
+						if TargetPlayer.Name:lower() == CurrentTargetPlayer then
+							local args = {
+								[1] = {
+									["Incant"] = "Phasmatos Motus Incendiamos",
+									["Target"] = TargetPlayer.Character
+								}
+							}
+							ReplicatedStorage:WaitForChild("RemoteEvents"):WaitForChild("WitchSpell"):FireServer(unpack(args))
+							break
+						end
+					end
+					wait(0)
+				end
+			else
+				SpamPMIPlr = false
+			end
+		end,
+	})
+	local SpamSilencioPlr = false
+
+	local Toggle = Tab:CreateToggle({
+		Name = "Silencio",
+		CurrentValue = false,
+		Flag = "Toggle1",
+		Callback = function(Value)
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			if Value then
+				SpamSilencioPlr = true
+				while SpamSilencioPlr do
+					local Players = game:GetService("Players")
+					for _, TargetPlayer in ipairs(Players:GetPlayers()) do
+						if TargetPlayer.Name:lower() == CurrentTargetPlayer then
+							local args = {
+								[1] = {
+									["Incant"] = "Silencio",
+									["Target"] = TargetPlayer.Character
+								}
+							}
+							ReplicatedStorage:WaitForChild("RemoteEvents"):WaitForChild("WitchSpell"):FireServer(unpack(args))
+							break
+						end
+					end
+					wait(0)
+				end
+			else
+				SpamSilencioPlr = false
+			end
+		end,
+	})
+	local SpamAdSomnumPlr = false
+
+	local Toggle = Tab:CreateToggle({
+		Name = "Ad Somnum",
+		CurrentValue = false,
+		Flag = "Toggle1",
+		Callback = function(Value)
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			if Value then
+				SpamAdSomnumPlr = true
+				while SpamAdSomnumPlr do
+					local Players = game:GetService("Players")
+					for _, TargetPlayer in ipairs(Players:GetPlayers()) do
+						if TargetPlayer.Name:lower() == CurrentTargetPlayer then
+							local args = {
+								[1] = {
+									["Incant"] = "Ad Somnum",
+									["Target"] = TargetPlayer.Character
+								}
+							}
+							ReplicatedStorage:WaitForChild("RemoteEvents"):WaitForChild("WitchSpell"):FireServer(unpack(args))
+							break
+						end
+					end
+					wait(0)
+				end
+			else
+				SpamAdSomnumPlr = false
+			end
+		end,
+	})
+	local Section = Tab:CreateSection("Character")
+	local CurrentTargetCharacter
+	local Paragraph = Tab:CreateParagraph({Title = "Target Character", Content = "Enter your target's full character name into the textbox to begin."})
+	local CharacterLabel = Tab:CreateLabel("Target: Undecided")
+	local Input = Tab:CreateInput({
+		Name = "Enter Name",
+		PlaceholderText = "Name Here",
+		RemoveTextAfterFocusLost = false,
+		Callback = function(Text)
+			local Players = game:GetService("Players")
+			CurrentTargetCharacter = Text:lower()
+			local CharacterFound = false
+			for _, TargetCharacterPlayer in ipairs(Players:GetPlayers()) do
+				if TargetCharacterPlayer:FindFirstChild("CharacterConfiguration") then 
+					if TargetCharacterPlayer:FindFirstChild("CharacterConfiguration"):FindFirstChild("CharacterName").Value:lower() == CurrentTargetCharacter then
+						CharacterFound = true
+						CharacterLabel:Set("Target: "..TargetCharacterPlayer:FindFirstChild("CharacterConfiguration"):FindFirstChild("CharacterName").Value)
+						break
+					end
+				end
+			end
+			if not CharacterFound then
+				CharacterLabel:Set("Target: Undecided")
+			end
+		end,
+	})
+	local Paragraph = Tab:CreateParagraph({Title = "Teleport", Content = "Teleports you to the target."})
+	local Button = Tab:CreateButton({
+		Name = "Teleport",
+		Callback = function()
+			local Players = game:GetService("Players")
+			local Player = Players.LocalPlayer
+			local Character = Player.Character
+			for _, TargetCharacterPlayer in ipairs(Players:GetPlayers()) do
+				if TargetCharacterPlayer:FindFirstChild("CharacterConfiguration") then 
+					if TargetCharacterPlayer:FindFirstChild("CharacterConfiguration"):FindFirstChild("CharacterName").Value:lower() == CurrentTargetCharacter then
+						Character.PrimaryPart.CFrame = TargetCharacterPlayer.Character.PrimaryPart.CFrame
+						break
+					end
+				end
+			end
+		end,
+	})
+	local Paragraph = Tab:CreateParagraph({Title = "Spectate", Content = "Views your target, click to toggle spectation."})
+	local Toggle = Tab:CreateToggle({
+		Name = "Spectate",
+		CurrentValue = false,
+		Flag = "Toggle1",
+		Callback = function(Value)
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			local Players = game:GetService("Players")
+			local Player = Players.LocalPlayer
+			local Character = Player.Character
+			local Humanoid = Character:WaitForChild("Humanoid")
+			if Value then
+				for _, TargetCharacterPlayer in ipairs(Players:GetPlayers()) do
+					if TargetCharacterPlayer:FindFirstChild("CharacterConfiguration") then 
+						if TargetCharacterPlayer:FindFirstChild("CharacterConfiguration"):FindFirstChild("CharacterName").Value:lower() == CurrentTargetCharacter then
+							workspace.CurrentCamera.CameraSubject = TargetCharacterPlayer.Character:WaitForChild("Humanoid")
+							break
+						end
+					end
+				end
+			else
+				workspace.CurrentCamera.CameraSubject = Humanoid
+			end
+		end,
+	})
+	local SpamIctusChar = false
+
+	local Paragraph = Tab:CreateParagraph({Title = "Spell Spamming", Content = "Attemps to spam your target with spells you toggled to spam them, while spamming it goes to the point to where your cooldown is gone fully. (YOU MUST HAVE A WITCH SIDE TO DO THIS)"})
+	local Toggle = Tab:CreateToggle({
+		Name = "Ferveret Sanguis",
+		CurrentValue = false,
+		Flag = "Toggle1",
+		Callback = function(Value)
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			if Value then
+				SpamIctusChar = true
+				while SpamIctusChar do
+					local Players = game:GetService("Players")
+					for _, TargetCharacterPlayer in ipairs(Players:GetPlayers()) do
+						if TargetCharacterPlayer:FindFirstChild("CharacterConfiguration") then 
+							if TargetCharacterPlayer:FindFirstChild("CharacterConfiguration"):FindFirstChild("CharacterName").Value:lower() == CurrentTargetCharacter then
+								local args = {
+									[1] = {
+										["Incant"] = "Ferveret sanguis",
+										["Target"] = TargetCharacterPlayer.Character
+									}
+								}
+								ReplicatedStorage:WaitForChild("RemoteEvents"):WaitForChild("WitchSpell"):FireServer(unpack(args))
+								break
+							end
+						end
+					end
+					wait(0)
+				end
+			else
+				SpamIctusChar = false
+			end
+		end,
+	})
+	local SpamOssoxChar = false
+	local Toggle = Tab:CreateToggle({
+		Name = "Ossox",
+		CurrentValue = false,
+		Flag = "Toggle1",
+		Callback = function(Value)
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			if Value then
+				SpamOssoxChar = true
+				while SpamOssoxChar do
+					local Players = game:GetService("Players")
+					for _, TargetCharacterPlayer in ipairs(Players:GetPlayers()) do
+						if TargetCharacterPlayer:FindFirstChild("CharacterConfiguration") then 
+							if TargetCharacterPlayer:FindFirstChild("CharacterConfiguration"):FindFirstChild("CharacterName").Value:lower() == CurrentTargetCharacter then
+								local args = {
+									[1] = {
+										["Incant"] = "Ossox",
+										["Target"] = TargetCharacterPlayer.Character
+									}
+								}
+								ReplicatedStorage:WaitForChild("RemoteEvents"):WaitForChild("WitchSpell"):FireServer(unpack(args))
+								break
+							end
+						end
+					end
+					wait(0)
+				end
+			else
+				SpamOssoxChar = false
+			end
+		end,
+	})
+	local SpamIncednChar = false
+
+	local Toggle = Tab:CreateToggle({
+		Name = "Incendia",
+		CurrentValue = false,
+		Flag = "Toggle1",
+		Callback = function(Value)
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			if Value then
+				SpamIncednChar = true
+				while SpamIncednChar do
+					local Players = game:GetService("Players")
+					for _, TargetCharacterPlayer in ipairs(Players:GetPlayers()) do
+						if TargetCharacterPlayer:FindFirstChild("CharacterConfiguration") then 
+							if TargetCharacterPlayer:FindFirstChild("CharacterConfiguration"):FindFirstChild("CharacterName").Value:lower() == CurrentTargetCharacter then
+								local args = {
+									[1] = {
+										["Incant"] = "Incendia",
+										["Target"] = TargetCharacterPlayer.Character
+									}
+								}
+								ReplicatedStorage:WaitForChild("RemoteEvents"):WaitForChild("WitchSpell"):FireServer(unpack(args))
+								break
+							end
+						end
+					end
+					wait(0)
+				end
+			else
+				SpamIncednChar = false
+			end
+		end,
+	})
+	local SpamErroxChar = false
+
+	local Toggle = Tab:CreateToggle({
+		Name = "Errox Femus",
+		CurrentValue = false,
+		Flag = "Toggle1",
+		Callback = function(Value)
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			if Value then
+				SpamErroxChar = true
+				while SpamErroxChar do
+					local Players = game:GetService("Players")
+					for _, TargetCharacterPlayer in ipairs(Players:GetPlayers()) do
+						if TargetCharacterPlayer:FindFirstChild("CharacterConfiguration") then 
+							if TargetCharacterPlayer:FindFirstChild("CharacterConfiguration"):FindFirstChild("CharacterName").Value:lower() == CurrentTargetCharacter then
+								local args = {
+									[1] = {
+										["Incant"] = "Errox Femus",
+										["Target"] = TargetCharacterPlayer.Character
+									}
+								}
+								ReplicatedStorage:WaitForChild("RemoteEvents"):WaitForChild("WitchSpell"):FireServer(unpack(args))
+								break
+							end
+						end
+					end
+					wait(0)
+				end
+			else
+				SpamErroxChar = false
+			end
+		end,
+	})
+	local SpamPoenaChar = false
+
+	local Toggle = Tab:CreateToggle({
+		Name = "Poena Doloris",
+		CurrentValue = false,
+		Flag = "Toggle1",
+		Callback = function(Value)
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			if Value then
+				SpamPoenaChar = true
+				while SpamPoenaChar do
+					local Players = game:GetService("Players")
+					for _, TargetCharacterPlayer in ipairs(Players:GetPlayers()) do
+						if TargetCharacterPlayer:FindFirstChild("CharacterConfiguration") then 
+							if TargetCharacterPlayer:FindFirstChild("CharacterConfiguration"):FindFirstChild("CharacterName").Value:lower() == CurrentTargetCharacter then
+								local args = {
+									[1] = {
+										["Incant"] = "Poena Doloris",
+										["Target"] = TargetCharacterPlayer.Character
+									}
+								}
+								ReplicatedStorage:WaitForChild("RemoteEvents"):WaitForChild("WitchSpell"):FireServer(unpack(args))
+								break
+							end
+						end
+					end
+					wait(0)
+				end
+			else
+				SpamPoenaChar = false
+			end
+		end,
+	})
+	local SpamImmobilusChar = false
+
+	local Toggle = Tab:CreateToggle({
+		Name = "Immobilus",
+		CurrentValue = false,
+		Flag = "Toggle1",
+		Callback = function(Value)
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			if Value then
+				SpamImmobilusChar = true
+				while SpamImmobilusChar do
+					local Players = game:GetService("Players")
+					for _, TargetCharacterPlayer in ipairs(Players:GetPlayers()) do
+						if TargetCharacterPlayer:FindFirstChild("CharacterConfiguration") then 
+							if TargetCharacterPlayer:FindFirstChild("CharacterConfiguration"):FindFirstChild("CharacterName").Value:lower() == CurrentTargetCharacter then
+								local args = {
+									[1] = {
+										["Incant"] = "Immobilus",
+										["Target"] = TargetCharacterPlayer.Character
+									}
+								}
+								ReplicatedStorage:WaitForChild("RemoteEvents"):WaitForChild("WitchSpell"):FireServer(unpack(args))
+								break
+							end
+						end
+					end
+					wait(0)
+				end
+			else
+				SpamImmobilusChar = false
+			end
+		end,
+	})
+	local SpamPMIChar = false
+
+	local Toggle = Tab:CreateToggle({
+		Name = "Phasmatos Motus Incendiamos",
+		CurrentValue = false,
+		Flag = "Toggle1",
+		Callback = function(Value)
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			if Value then
+				SpamPMIChar = true
+				while SpamPMIChar do
+					local Players = game:GetService("Players")
+					for _, TargetCharacterPlayer in ipairs(Players:GetPlayers()) do
+						if TargetCharacterPlayer:FindFirstChild("CharacterConfiguration") then 
+							if TargetCharacterPlayer:FindFirstChild("CharacterConfiguration"):FindFirstChild("CharacterName").Value:lower() == CurrentTargetCharacter then
+								local args = {
+									[1] = {
+										["Incant"] = "Phasmatos Motus Incendiamos",
+										["Target"] = TargetCharacterPlayer.Character
+									}
+								}
+								ReplicatedStorage:WaitForChild("RemoteEvents"):WaitForChild("WitchSpell"):FireServer(unpack(args))
+								break
+							end
+						end
+					end
+					wait(0)
+				end
+			else
+				SpamPMIChar = false
+			end
+		end,
+	})
+	local SpamSilencioChar = false
+
+	local Toggle = Tab:CreateToggle({
+		Name = "Silencio",
+		CurrentValue = false,
+		Flag = "Toggle1",
+		Callback = function(Value)
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			if Value then
+				SpamSilencioChar = true
+				while SpamSilencioChar do
+					local Players = game:GetService("Players")
+					for _, TargetCharacterPlayer in ipairs(Players:GetPlayers()) do
+						if TargetCharacterPlayer:FindFirstChild("CharacterConfiguration") then 
+							if TargetCharacterPlayer:FindFirstChild("CharacterConfiguration"):FindFirstChild("CharacterName").Value:lower() == CurrentTargetCharacter then
+								local args = {
+									[1] = {
+										["Incant"] = "Silencio",
+										["Target"] = TargetCharacterPlayer.Character
+									}
+								}
+								ReplicatedStorage:WaitForChild("RemoteEvents"):WaitForChild("WitchSpell"):FireServer(unpack(args))
+								break
+							end
+						end
+					end
+					wait(0)
+				end
+			else
+				SpamSilencioChar = false
+			end
+		end,
+	})
+	local SpamAdSomnumChar = false
+
+	local Toggle = Tab:CreateToggle({
+		Name = "Ad Somnum",
+		CurrentValue = false,
+		Flag = "Toggle1",
+		Callback = function(Value)
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			if Value then
+				SpamAdSomnumChar = true
+				while SpamAdSomnumChar do
+					local Players = game:GetService("Players")
+					for _, TargetCharacterPlayer in ipairs(Players:GetPlayers()) do
+						if TargetCharacterPlayer:FindFirstChild("CharacterConfiguration") then 
+							if TargetCharacterPlayer:FindFirstChild("CharacterConfiguration"):FindFirstChild("CharacterName").Value:lower() == CurrentTargetCharacter then
+								local args = {
+									[1] = {
+										["Incant"] = "Ad Somnum",
+										["Target"] = TargetCharacterPlayer.Character
+									}
+								}
+								ReplicatedStorage:WaitForChild("RemoteEvents"):WaitForChild("WitchSpell"):FireServer(unpack(args))
+								break
+							end
+						end
+					end
+					wait(0)
+				end
+			else
+				SpamAdSomnumChar = false
+			end
+		end,
+	})
+	local Tab = Window:CreateTab("Sliders")
+	local Section = Tab:CreateSection("Character")
+	local Paragraph = Tab:CreateParagraph({Title = "Walk Speed", Content = "Changes your speed."})
+	local Slider = Tab:CreateSlider({
+		Name = "Walk Speed",
+		Range = {0, 500},
+		Increment = 1,
+		Suffix = "",
+		CurrentValue = 16,
+		Flag = "Slider1",
+		Callback = function(Value)
+			local Players = game:GetService("Players")
+			local Player = Players.LocalPlayer
+			local Character = Player.Character
+			local Humanoid = Character:WaitForChild("Humanoid")
+			Humanoid.WalkSpeed = Value
+		end,
+	})
+	local Paragraph = Tab:CreateParagraph({Title = "Jump Power", Content = "Changes how high you jump."})
+	local Slider = Tab:CreateSlider({
+		Name = "Jump Power",
+		Range = {0, 500},
+		Increment = 1,
+		Suffix = "",
+		CurrentValue = 50,
+		Flag = "Slider1",
+		Callback = function(Value)
+			local Players = game:GetService("Players")
+			local Player = Players.LocalPlayer
+			local Character = Player.Character
+			local Humanoid = Character:WaitForChild("Humanoid")
+			Humanoid.JumpPower = Value
+		end,
+	})
+	local Section = Tab:CreateSection("Other")
+	local Paragraph = Tab:CreateParagraph({Title = "Field Of View", Content = "Changes your field of view."})
+	local Slider = Tab:CreateSlider({
+		Name = "Field Of View",
+		Range = {0, 120},
+		Increment = 1,
+		Suffix = "",
+		CurrentValue = 70,
+		Flag = "Slider1",
+		Callback = function(Value)
+			workspace.CurrentCamera.FieldOfView = Value
+		end,
+	})
+	local Paragraph = Tab:CreateParagraph({Title = "Gravity", Content = "Changes your gravity."})
+	local Slider = Tab:CreateSlider({
+		Name = "Gravity",
+		Range = {0, 196.2},
+		Increment = 1,
+		Suffix = "",
+		CurrentValue = 196.2,
+		Flag = "Slider1",
+		Callback = function(Value)
+			workspace.Gravity = Value
+		end,
+	})
+	local Tab = Window:CreateTab("Keybinds")
+	local Section = Tab:CreateSection("Witch")
+	local Keybind = Tab:CreateKeybind({
+		Name = "Incendia",
+		CurrentKeybind = "Two",
+		HoldToInteract = false,
+		Flag = "Keybind1",
+		Callback = function(Keybind)
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			local Players = game:GetService("Players")
+			local Player = Players.LocalPlayer
+			local Mouse = Player:GetMouse()
+			local Target = Mouse.Target
+			local args = {
+				[1] = {
+					["Incant"] = "Incendia",
+					["Target"] = Target.Parent
+				}
+			}
+			ReplicatedStorage:WaitForChild("RemoteEvents"):WaitForChild("WitchSpell"):FireServer(unpack(args))
+		end,
+	})
+	local Keybind = Tab:CreateKeybind({
+		Name = "Errox Femus",
+		CurrentKeybind = "Two",
+		HoldToInteract = false,
+		Flag = "Keybind1",
+		Callback = function(Keybind)
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			local Players = game:GetService("Players")
+			local Player = Players.LocalPlayer
+			local Mouse = Player:GetMouse()
+			local Target = Mouse.Target
+			local args = {
+				[1] = {
+					["Incant"] = "Errox Femus",
+					["Target"] = Target.Parent
+				}
+			}
+			ReplicatedStorage:WaitForChild("RemoteEvents"):WaitForChild("WitchSpell"):FireServer(unpack(args))
+		end,
+	})
+	local Keybind = Tab:CreateKeybind({
+		Name = "Poena Doloris",
+		CurrentKeybind = "Two",
+		HoldToInteract = false,
+		Flag = "Keybind1",
+		Callback = function(Keybind)
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			local Players = game:GetService("Players")
+			local Player = Players.LocalPlayer
+			local Mouse = Player:GetMouse()
+			local Target = Mouse.Target
+			local args = {
+				[1] = {
+					["Incant"] = "Poena Doloris",
+					["Target"] = Target.Parent
+				}
+			}
+			ReplicatedStorage:WaitForChild("RemoteEvents"):WaitForChild("WitchSpell"):FireServer(unpack(args))
+		end,
+	})
+	local Tab = Window:CreateTab("Animations")
+	local Section = Tab:CreateSection("")
+	local Paragraph = Tab:CreateParagraph({Title = "INFORMATION:", Content = "This will only modify the animate script in your character, changing your animation(s)."})
+	local Section = Tab:CreateSection("The Vampire Legacies 1")
+	local Section = Tab:CreateSection("Male")
+	local Button = Tab:CreateButton({
+		Name = "Default",
+		Callback = function()
+			local Players = game:GetService("Players")
+			local Player = Players.LocalPlayer
+			local Character = Player.Character
+			local Humanoid = Character:WaitForChild("Humanoid")
+			local ActiveAnimationTracks = Humanoid:GetPlayingAnimationTracks()
+			for _, v in pairs(ActiveAnimationTracks) do
+				v:Stop()
+			end
+			wait(0.001)
+			Character:WaitForChild("Animate"):WaitForChild("idle"):WaitForChild("Animation1").AnimationId = "rbxassetid://5532734372"
+			Character:WaitForChild("Animate"):WaitForChild("idle"):WaitForChild("Animation2").AnimationId = "rbxassetid://5532734372"
+			Character:WaitForChild("Animate"):WaitForChild("run"):WaitForChild("RunAnim").AnimationId = "rbxassetid://5684397250"
+		end,
+	})
+	local Section = Tab:CreateSection("Female")
+	local Button = Tab:CreateButton({
+		Name = "Default",
+		Callback = function()
+			local Players = game:GetService("Players")
+			local Player = Players.LocalPlayer
+			local Character = Player.Character
+			local Humanoid = Character:WaitForChild("Humanoid")
+			local ActiveAnimationTracks = Humanoid:GetPlayingAnimationTracks()
+			for _, v in pairs(ActiveAnimationTracks) do
+				v:Stop()
+			end
+			wait(0.001)
+			Character:WaitForChild("Animate"):WaitForChild("idle"):WaitForChild("Animation1").AnimationId = "rbxassetid://5820040640"
+			Character:WaitForChild("Animate"):WaitForChild("idle"):WaitForChild("Animation2").AnimationId = "rbxassetid://5820040640"
+			Character:WaitForChild("Animate"):WaitForChild("run"):WaitForChild("RunAnim").AnimationId = "rbxassetid://5532975691"
+		end,
+	})
+
+	local Button = Tab:CreateButton({
+		Name = "Dahlia",
+		Callback = function()
+			local Players = game:GetService("Players")
+			local Player = Players.LocalPlayer
+			local Character = Player.Character
+			local Humanoid = Character:WaitForChild("Humanoid")
+			local ActiveAnimationTracks = Humanoid:GetPlayingAnimationTracks()
+			for _, v in pairs(ActiveAnimationTracks) do
+				v:Stop()
+			end
+			wait(0.001)
+			Character:WaitForChild("Animate"):WaitForChild("idle"):WaitForChild("Animation1").AnimationId = "rbxassetid://6828892549"
+			Character:WaitForChild("Animate"):WaitForChild("idle"):WaitForChild("Animation2").AnimationId = "rbxassetid://6828892549"
+			Character:WaitForChild("Animate"):WaitForChild("run"):WaitForChild("RunAnim").AnimationId = "rbxassetid://5532975691"
+		end,
+	})
+
+	local Button = Tab:CreateButton({
+		Name = "Esther Mikaelson",
+		Callback = function()
+			local Players = game:GetService("Players")
+			local Player = Players.LocalPlayer
+			local Character = Player.Character
+			local Humanoid = Character:WaitForChild("Humanoid")
+			local ActiveAnimationTracks = Humanoid:GetPlayingAnimationTracks()
+			for _, v in pairs(ActiveAnimationTracks) do
+				v:Stop()
+			end
+			wait(0.001)
+			Character:WaitForChild("Animate"):WaitForChild("idle"):WaitForChild("Animation1").AnimationId = "rbxassetid://7258995056"
+			Character:WaitForChild("Animate"):WaitForChild("idle"):WaitForChild("Animation2").AnimationId = "rbxassetid://7258995056"
+			Character:WaitForChild("Animate"):WaitForChild("run"):WaitForChild("RunAnim").AnimationId = "rbxassetid://5532975691"
+		end,
+	})
+
+	local Button = Tab:CreateButton({
+		Name = "Qetsiyah / Davina Claire",
+		Callback = function()
+			local Players = game:GetService("Players")
+			local Player = Players.LocalPlayer
+			local Character = Player.Character
+			local Humanoid = Character:WaitForChild("Humanoid")
+			local ActiveAnimationTracks = Humanoid:GetPlayingAnimationTracks()
+			for _, v in pairs(ActiveAnimationTracks) do
+				v:Stop()
+			end
+			wait(0.001)
+			Character:WaitForChild("Animate"):WaitForChild("idle"):WaitForChild("Animation1").AnimationId = "rbxassetid://7218083425"
+			Character:WaitForChild("Animate"):WaitForChild("idle"):WaitForChild("Animation2").AnimationId = "rbxassetid://7218083425"
+			Character:WaitForChild("Animate"):WaitForChild("run"):WaitForChild("RunAnim").AnimationId = "rbxassetid://5532975691"
+		end,
+	})
+	local Section = Tab:CreateSection("The Vampire Legacies 2")
+	local Section = Tab:CreateSection("Male")
+	local Button = Tab:CreateButton({
+		Name = "Default",
+		Callback = function()
+			local Players = game:GetService("Players")
+			local Player = Players.LocalPlayer
+			local Character = Player.Character
+			local Humanoid = Character:WaitForChild("Humanoid")
+			local ActiveAnimationTracks = Humanoid:GetPlayingAnimationTracks()
+			for _, v in pairs(ActiveAnimationTracks) do
+				v:Stop()
+			end
+			wait(0.001)
+			Character:WaitForChild("Animate"):WaitForChild("idle"):WaitForChild("Animation1").AnimationId = "rbxassetid://17590595476"
+			Character:WaitForChild("Animate"):WaitForChild("idle"):WaitForChild("Animation2").AnimationId = "rbxassetid://17590595476"
+			Character:WaitForChild("Animate"):WaitForChild("run"):WaitForChild("RunAnim").AnimationId = "rbxassetid://13897215158"
+		end,
+	})
+	local Button = Tab:CreateButton({
+		Name = "Silas",
+		Callback = function()
+			local Players = game:GetService("Players")
+			local Player = Players.LocalPlayer
+			local Character = Player.Character
+			local Humanoid = Character:WaitForChild("Humanoid")
+			local ActiveAnimationTracks = Humanoid:GetPlayingAnimationTracks()
+			for _, v in pairs(ActiveAnimationTracks) do
+				v:Stop()
+			end
+			wait(0.001)
+			Character:WaitForChild("Animate"):WaitForChild("idle"):WaitForChild("Animation1").AnimationId = "rbxassetid://18298109865"
+			Character:WaitForChild("Animate"):WaitForChild("idle"):WaitForChild("Animation2").AnimationId = "rbxassetid://18298109865"
+			Character:WaitForChild("Animate"):WaitForChild("run"):WaitForChild("RunAnim").AnimationId = "rbxassetid://18298126106"
+		end,
+	})
+	local Button = Tab:CreateButton({
+		Name = "Original Vampire",
+		Callback = function()
+			local Players = game:GetService("Players")
+			local Player = Players.LocalPlayer
+			local Character = Player.Character
+			local Humanoid = Character:WaitForChild("Humanoid")
+			local ActiveAnimationTracks = Humanoid:GetPlayingAnimationTracks()
+			for _, v in pairs(ActiveAnimationTracks) do
+				v:Stop()
+			end
+			wait(0.001)
+			Character:WaitForChild("Animate"):WaitForChild("idle"):WaitForChild("Animation1").AnimationId = "rbxassetid://14774761368"
+			Character:WaitForChild("Animate"):WaitForChild("idle"):WaitForChild("Animation2").AnimationId = "rbxassetid://14774761368"
+			Character:WaitForChild("Animate"):WaitForChild("run"):WaitForChild("RunAnim").AnimationId = "rbxassetid://13897215158"
+		end,
+	})
+	local Section = Tab:CreateSection("Female")
+	local Button = Tab:CreateButton({
+		Name = "Default",
+		Callback = function()
+			local Players = game:GetService("Players")
+			local Player = Players.LocalPlayer
+			local Character = Player.Character
+			local Humanoid = Character:WaitForChild("Humanoid")
+			local ActiveAnimationTracks = Humanoid:GetPlayingAnimationTracks()
+			for _, v in pairs(ActiveAnimationTracks) do
+				v:Stop()
+			end
+			wait(0.001)
+			Character:WaitForChild("Animate"):WaitForChild("idle"):WaitForChild("Animation1").AnimationId = "rbxassetid://12821182159"
+			Character:WaitForChild("Animate"):WaitForChild("idle"):WaitForChild("Animation2").AnimationId = "rbxassetid://12821182159"
+			Character:WaitForChild("Animate"):WaitForChild("run"):WaitForChild("RunAnim").AnimationId = "rbxassetid://13897211373"
+		end,
+	})
+	local Button = Tab:CreateButton({
+		Name = "Esther Mikaelson",
+		Callback = function()
+			local Players = game:GetService("Players")
+			local Player = Players.LocalPlayer
+			local Character = Player.Character
+			local Humanoid = Character:WaitForChild("Humanoid")
+			local ActiveAnimationTracks = Humanoid:GetPlayingAnimationTracks()
+			for _, v in pairs(ActiveAnimationTracks) do
+				v:Stop()
+			end
+			wait(0.001)
+			Character:WaitForChild("Animate"):WaitForChild("idle"):WaitForChild("Animation1").AnimationId = "rbxassetid://91840392975340"
+			Character:WaitForChild("Animate"):WaitForChild("idle"):WaitForChild("Animation2").AnimationId = "rbxassetid://91840392975340"
+			Character:WaitForChild("Animate"):WaitForChild("run"):WaitForChild("RunAnim").AnimationId = "rbxassetid://13897211373"
+		end,
+	})
+	local Button = Tab:CreateButton({
+		Name = "Dark Josie Saltzman",
+		Callback = function()
+			local Players = game:GetService("Players")
+			local Player = Players.LocalPlayer
+			local Character = Player.Character
+			local Humanoid = Character:WaitForChild("Humanoid")
+			local ActiveAnimationTracks = Humanoid:GetPlayingAnimationTracks()
+			for _, v in pairs(ActiveAnimationTracks) do
+				v:Stop()
+			end
+			wait(0.001)
+			Character:WaitForChild("Animate"):WaitForChild("idle"):WaitForChild("Animation1").AnimationId = "rbxassetid://18321812342"
+			Character:WaitForChild("Animate"):WaitForChild("idle"):WaitForChild("Animation2").AnimationId = "rbxassetid://18321812342"
+			Character:WaitForChild("Animate"):WaitForChild("run"):WaitForChild("RunAnim").AnimationId = "rbxassetid://18321800242"
+		end,
+	})
+	local Button = Tab:CreateButton({
+		Name = "Rebekah Mikaelson",
+		Callback = function()
+			local Players = game:GetService("Players")
+			local Player = Players.LocalPlayer
+			local Character = Player.Character
+			local Humanoid = Character:WaitForChild("Humanoid")
+			local ActiveAnimationTracks = Humanoid:GetPlayingAnimationTracks()
+			for _, v in pairs(ActiveAnimationTracks) do
+				v:Stop()
+			end
+			wait(0.001)
+			Character:WaitForChild("Animate"):WaitForChild("idle"):WaitForChild("Animation1").AnimationId = "rbxassetid://18321833902"
+			Character:WaitForChild("Animate"):WaitForChild("idle"):WaitForChild("Animation2").AnimationId = "rbxassetid://18321833902"
+			Character:WaitForChild("Animate"):WaitForChild("run"):WaitForChild("RunAnim").AnimationId = "rbxassetid://18321823707"
+		end,
+	})
+	local Button = Tab:CreateButton({
+		Name = "Hope Mikaelson",
+		Callback = function()
+			local Players = game:GetService("Players")
+			local Player = Players.LocalPlayer
+			local Character = Player.Character
+			local Humanoid = Character:WaitForChild("Humanoid")
+			local ActiveAnimationTracks = Humanoid:GetPlayingAnimationTracks()
+			for _, v in pairs(ActiveAnimationTracks) do
+				v:Stop()
+			end
+			wait(0.001)
+			Character:WaitForChild("Animate"):WaitForChild("idle"):WaitForChild("Animation1").AnimationId = "rbxassetid://18321595536"
+			Character:WaitForChild("Animate"):WaitForChild("idle"):WaitForChild("Animation2").AnimationId = "rbxassetid://18321595536"
+			Character:WaitForChild("Animate"):WaitForChild("run"):WaitForChild("RunAnim").AnimationId = "rbxassetid://18321582269"
+		end,
+	})
+	local Button = Tab:CreateButton({
+		Name = "Amara",
+		Callback = function()
+			local Players = game:GetService("Players")
+			local Player = Players.LocalPlayer
+			local Character = Player.Character
+			local Humanoid = Character:WaitForChild("Humanoid")
+			local ActiveAnimationTracks = Humanoid:GetPlayingAnimationTracks()
+			for _, v in pairs(ActiveAnimationTracks) do
+				v:Stop()
+			end
+			wait(0.001)
+			Character:WaitForChild("Animate"):WaitForChild("idle"):WaitForChild("Animation1").AnimationId = "rbxassetid://18318581876"
+			Character:WaitForChild("Animate"):WaitForChild("idle"):WaitForChild("Animation2").AnimationId = "rbxassetid://18318581876"
+			Character:WaitForChild("Animate"):WaitForChild("run"):WaitForChild("RunAnim").AnimationId = "rbxassetid://13897211373"
+		end,
+	})
+end
